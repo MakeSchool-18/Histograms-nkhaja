@@ -17,13 +17,22 @@ class Dictogram(dict):
     def update(self, iterable):
         """Update this histogram with the items in the given iterable"""
         for item in iterable:
-            # TODO: increment item count
-            pass
+            if item in self:
+                self[item] += 1
+                self.tokens  += 1
+            else:
+                self[item] = 1
+                self.types += 1
+                self.tokens += 1
+
 
     def count(self, item):
         """Return the count of the given item in this histogram, or 0"""
-        # TODO: retrieve item count
-        pass
+        if item in self:
+            return self[item]
+        return 0
+
+
 
 
 class Listogram(list):
@@ -36,26 +45,45 @@ class Listogram(list):
         if iterable:
             self.update(iterable)
 
+
     def update(self, iterable):
         """Update this histogram with the items in the given iterable"""
+        index = None
         for item in iterable:
-            # TODO: increment item count
-            pass
+            index = index(item)
+            if index:
+                count += 1
+                self.tokens += 1
+
+            else:
+                self.append((item, 1))
+                self.types += 1
+                self.tokens += 1
 
     def count(self, item):
         """Return the count of the given item in this histogram, or 0"""
-        # TODO: retrieve item count
-        pass
+        if item in self:
+            return self[self._index(item)][1]
+        else:
+            return 0
 
     def __contains__(self, item):
         """Return True if the given item is in this histogram, or False"""
+        for entry in self:
+            if entry[0] == item:
+                return True
+        return False
+
         # TODO: check if item is in histogram
-        pass
 
     def _index(self, target):
         """Return the index of the (target, count) entry if found, or None"""
-        # TODO: implement linear search to find an item's index
-        pass
+        for index, (word, count) in self.enumerate:
+            if word == target:
+                return index
+        return None
+
+
 
 
 def test_histogram(text_list):
